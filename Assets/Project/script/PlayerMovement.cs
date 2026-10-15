@@ -54,15 +54,16 @@ public class movement : MonoBehaviour
         }
         // -----------------------------------------------------
 
-        // Fitur Lompat
+// Fitur Lompat
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-
             if (anim != null)
             {
                 anim.SetTrigger("lompatAktif");
             }
+            
+            // Menunda lonjakan fisik selama 0.2 detik (sesuaikan angka ini dengan animasi Anda)
+            Invoke("TerapkanLompatan", 0.5f); 
         }
 
         // Menerapkan Gravitasi
@@ -70,6 +71,15 @@ public class movement : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
     }
     
+    // --- [BARU] FUNGSI PENERAP LOMPATAN SETELAH JEDA ---
+    void TerapkanLompatan()
+    {
+        if (isGrounded) // Pastikan karakter masih di tanah saat jeda selesai
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+    }
+
     // --- FITUR X-RAY UNTUK MELIHAT SENSOR ---
     void OnDrawGizmos()
     {
